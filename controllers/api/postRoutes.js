@@ -21,7 +21,7 @@ router.delete('/:id', async (req, res) => {
                 user_id: req.session.user_id
             },
         });
-
+        console.log(req.session.user_id);
         if (!postData) {
             res.status(400).json({ message: 'No post with that ID'});
             return;
@@ -34,5 +34,7 @@ router.delete('/:id', async (req, res) => {
 });
 
 // TODO put
+
+
 
 module.exports = router;

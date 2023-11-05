@@ -1,12 +1,51 @@
-{{ log this }}
-{{#each posts as |post|}}
+{{!-- {{log this}} --}}
+{{!-- HISTORY CARD --}}
+<section class="container-fluid">
+  <div class="row mx-auto d-flex justify-content-center">
+    {{!-- sm: 576px|md: 768px|lg: 992px|xl: 1200px --}}
+  <section class="col-sm-12 col-md-6 col-lg-5 col-xl-3">
+    <a
+      href="#"
+      class="card mt-4"
+      id="historyCard"
+      style=" height: 25rem; text-decoration: none; border: 4px solid #d9b08c; border-radius: 10px"
+    >
+      <div class="card-header" style="background-color: #d9b08c;">
+        <h5 class="card-title"> HISTORICAL EVENT </h5>
+        <p class="card-subtitle mb-2 text-body-secondary"> Made TODAY </p>
+      </div>
+      <div class="card-body" style="background-color: #d1e8e2;">
+        <p class="card-text"> ARGH </p>
+      </div>
+    </a>
+  </section>
+{{!-- POST CARD --}}
+  <section class="col-sm-12 col-md-6 col-lg-7 col-xl-6">
+    {{#each posts as |post|}}
 
-<a href="posts/{{post.id}}" class="card m-2" id="postCard" style="width: 40rem; height: 10rem; text-decoration: none">
-  <div class="card-body">
-    <h5 class="card-title"> {{ post.title }} </h5>
-    <p class="card-subtitle mb-2 text-body-secondary"> Made on {{ format_date post.created_at }} </p>
-    <p class="card-text"> {{ post.content }} </p>
-  </div>
-</a>
+      <a
+        href="posts/{{post.id}}"
+        class="card my-4"
+        id="postCard"
+        style="height: 12rem; text-decoration: none;border: 4px solid #d9b08c; border-radius: 10px;"
+      >
+        <div class="card-header" style="background-color: #d9b08c;">
+          <h5 class="card-title"> {{post.title}} </h5>
+          <p class="card-subtitle mb-2 xt-body-secondary">Made on
+            {{format_date post.created_at}}
+            by
+            {{user.username}}
+          </p>
+        </div>
+        <div class="card-body" style="background-color: #d1e8e2;">
 
-{{/each}}
+          <p class="card-text"> {{post.content}} </p>
+        </div>
+      </a>
+
+    {{/each}}
+  </section>
+
+  
+</div>
+</section>

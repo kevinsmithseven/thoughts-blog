@@ -31,46 +31,6 @@ router.get('/login', (req, res) => {
     res.render('login');
 });
 
-/* router.get('/', async (req, res) => {
-    try {
-        const commentData = await Comment.findAll({
-            include: [
-                {
-                    model: User,
-                    attributes: ['username']
-                }
-            ]
-        });
-        const comments = commentData.map((comment) => comment.get({ plain: true}));
-
-        res.render('homepage', {
-            comments
-        });
-    } catch (err) {
-        res.status(500).json(err);
-    }
-}); */
-
-/* router.get('/', async (req, res) => {
-    try {
-        const replyData = await Reply.findAll({
-            include: [
-                {
-                    model: User,
-                    attributes: ['username']
-                }
-            ]
-        });
-        const replies = replyData.map((reply) => reply.get({ plain: true}));
-
-        res.render('homepage', {
-            replies
-        });
-    } catch (err) {
-        res.status(500).json(err);
-    }
-}); */
-
 router.get('/posts/:id', async (req, res) => {
     try {
         const postData = await Post.findByPk(req.params.id, {
@@ -99,6 +59,7 @@ router.get('/posts/:id', async (req, res) => {
     console.log(posts.comments[0].replies.username); */
         res.render('posts', {
             ...posts,
+            loggedIn: req.session.loggedIn
         });
     } catch (err) {
         res.status(500).json(err);
@@ -106,7 +67,7 @@ router.get('/posts/:id', async (req, res) => {
 });
 
 // GET user posts for user view
-router.get('/user', async (req, res) => {
+/* router.get('/user', async (req, res) => {
     try {
         // Find the logged in user based on the session ID
         const postData = await Post.findAll({
@@ -114,60 +75,71 @@ router.get('/user', async (req, res) => {
                 user_id: req.session.user_id
             },
             include: [
-                {
-                    model: User,
-                    attributes: ['username'],
-                }
+                User,
             ]
         });
 
         const userPosts = postData.map((posts) => posts.get({ plain: true }));
         console.log(userPosts);
+
         res.render('user', {
-            userPosts,
-            logged_in: req.session.loggedIn,
+            ...userPosts,
+            loggedIn: req.session.loggedIn,
         });
     } catch (err) {
         res.status(500).json(err);
     }
-});
+}); */
 
-router.get('comments', async (req, res) => {
+router.get('/user', async (req, res) => {
     try {
-        const commentData = await Comment.findByPk(req.params.id, {
+        // Find the logged in user based on the session ID
+        const userData = await User.findByPk(req.session.user_id, {
+            attributes: { exclude: ['password'] },
+            include: [{ model: Post }, { model: Comment}, { model: Reply}],
+        });
+
+        const user = userData.get({ plain: true });
+
+        const postData = await Post.findAll({
+            where: {
+                user_id: req.session.user_id
+            },
             include: [
-                {
-                    model: User,
-                    attributes: ['username'],
-                },
-            ],
+                User,
+            ]
         });
 
-        const comments = commentData.get({ plain: true });
+        const userPosts = postData.map((posts) => posts.get({ plain: true }));
 
-        res.render('', {
-            ...comments,
-        });
-    } catch (err) {
-        res.status(500).json(err);
-    }
-});
-
-router.get('replies', async (req, res) => {
-    try {
-        const replyData = await Reply.findByPk(req.params.id, {
+        const commentData = await Comment.findAll({
+            where: {
+                user_id: req.session.user_id
+            },
             include: [
-                {
-                    model: User,
-                    attributes: ['username'],
-                },
-            ],
+                User,
+            ]
         });
 
-        const replies = replyData.get({ plain: true });
+        const userComments = commentData.map((comments) => comments.get({ plain: true }));
 
-        res.render('', {
-            ...replies,
+        const replyData = await Reply.findAll({
+            where: {
+                user_id: req.session.user_id
+            },
+            include: [
+                User,
+            ]
+        });
+
+        const userReply = replyData.map((replies) => replies.get({ plain: true }));
+
+        res.render('user', {
+            ...user,
+            ...userPosts,
+            ...userComments,
+            ...userReply,
+            loggedIn: req.session.loggedIn,
         });
     } catch (err) {
         res.status(500).json(err);

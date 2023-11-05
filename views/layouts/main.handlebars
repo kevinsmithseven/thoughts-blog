@@ -9,13 +9,25 @@
       integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN"
       crossorigin="anonymous"
     />
-    <link rel="stylesheet" href="/public/css/style.css" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="/css/style.css" />
   </head>
-  <body>
+  <body style="background-color: #116466;height: 100vh;">
     <header>
-      <nav class="navbar navbar-expand-lg bg-body-tertiary d-flex">
+      <nav
+        class="navbar navbar-expand-lg d-flex"
+        style="background-color: #2c3531;"
+      >
         <div class="container-fluid">
-          <a class="navbar-brand ml-2" href="/">History Huddle</a>
+
+          <img
+            src="/images/history-huddle-high-resolution-logo-transparent.png"
+            alt="History Huddle"
+            href="/"
+            class=""
+            style="height:6em;"
+          />
+
           <button
             class="navbar-toggler"
             type="button"
@@ -27,40 +39,103 @@
           >
             <span class="navbar-toggler-icon"></span>
           </button>
-
+        {{!-- ADD POST BUTTON --}}
           {{#if loggedIn}}
-          <div class="container-fluid d-flex justify-content-center">
-            <button type="button" class="btn btn-info">Add post</button>
-          </div>
+            <div class="container-fluid d-flex justify-content-center">
+              <button
+                type="button"
+                class="btn"
+                style="background-color: #fccd04;"
+                data-bs-toggle="modal"
+                data-bs-target="#add-post"
+              >Add post</button>
+            </div>
           {{else}}
-          <div class="container-fluid d-flex justify-content-center">
-            <button type="button" class="btn btn-info"><a class="nav-link" href="/signup">Signup to add post</a></button>
-          </div>
-           
+            <div class="container-fluid d-flex justify-content-center">
+              <button
+                type="button"
+                class="btn"
+                style="background-color: #fccd04;"
+              >
+                <a class="nav-link" href="/login">Login to add post</a>
+              </button>
+            </div>
           {{/if}}
+          {{!-- NEW POST FORM --}}
+          <div
+            class="modal fade"
+            id="add-post"
+            data-bs-backdrop="static"
+            data-bs-keyboard="false"
+            tabindex="-1"
+            aria-labelledby="add-postLabel"
+            aria-hidden="true"
+          >
+            <div class="modal-dialog">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h1 class="modal-title fs-5" id="add-postLabel">New Post</h1>
+                  <button
+                    type="button"
+                    class="btn-close"
+                    data-bs-dismiss="modal"
+                    aria-label="Close"
+                  ></button>
+                </div>
+                <div class="modal-body">
+                  <form class="new-post-form">
+                    <div class="mb-3">
+            <label for="post-title" class="col-form-label">Title:</label>
+            <input type="text" class="form-control" id="post-title">
+          </div>
+          <div class="mb-3">
+            <label for="post-content" class="col-form-label">Content:</label>
+            <textarea class="form-control" id="post-content"></textarea>
+          </div>
+                  </form>
+                </div>
+                <div class="modal-footer">
+                  <button
+                    type="button"
+                    class="btn btn-secondary"
+                    data-bs-dismiss="modal"
+                  >Close</button>
+                  <button
+                    type="button"
+                    class="btn"
+                    id="submit-post-btn"
+                    style="background-color: #fccd04;"
+                  >Submit</button>
+                </div>
+              </div>
+            </div>
+          </div>
 
-          <div class="collapse navbar-collapse d-flex justify-content-end" id="navbarNav">
-            <ul class="navbar-nav ">
-              
+          <div
+            class="collapse navbar-collapse d-flex justify-content-end"
+            id="navbarNav">
+            <ul class="navbar-nav" style="color: #fccd04;">              
+                {{!-- NAVBAR LINKS --}}
+              {{#if loggedIn}}
               <li class="nav-item">
-                <a class="nav-link active" aria-current="page" href="/">Home</a>
+                <a class="nav-link navlink" href="/">Home</a>
               </li>
-              
-              
-                {{#if loggedIn}}
                 <li class="nav-item">
-                <a class="nav-link" href="#">Profile</a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link" id="logout" href="/">Logout</a>
-              </li>
+                  <a class="nav-link navlink" href="/user">Profile</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link navlink" id="logout" href="/">Logout</a>
+                </li>
               {{else}}
               <li class="nav-item">
-                <a class="nav-link" href="/login">Login</a>
+                <a class="nav-link navlink" href="/">Home</a>
               </li>
-              <li class="nav-item">
-                <a class="nav-link" href="/signup">Signup</a>             
-              </li>
+                <li class="nav-item">
+                  <a class="nav-link navlink" href="/login">Login</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link navlink" href="/signup">Signup</a>
+                </li>
               {{/if}}
             </ul>
           </div>
@@ -68,8 +143,9 @@
       </nav>
     </header>
     <main>
-      
-      {{{ body }}}
+
+      {{{body}}}
+
     </main>
   </body>
   <script
@@ -78,6 +154,11 @@
     crossorigin="anonymous"
   ></script>
   {{#if loggedIn}}
-  <script src="/js/logout.js"></script>
+    <script src="/js/logout.js"></script>
+    <script src="/js/signup.js"></script>
+    <script src="/js/createpost.js"></script>
+    <script src="/js/createcomment.js"></script>
+    <script src="/js/createreply.js"></script>
+    <script src=""></script>
   {{/if}}
 </html>

@@ -8,7 +8,8 @@ router.post('/signup', async (req, res) => {
     try {
         console.log(req.body); //TODO comment out once verified working
         const dbUserData = await User.create({
-            username: req.body.email,
+            username: req.body.username,
+            email: req.body.email,
             password: req.body.password,
         });
 
@@ -76,4 +77,22 @@ router.post('/logout', (req, res) => {
     }
 });
 
+/* router.post('/upload', parser.single('image'), async (req, res) => {
+    try {
+        if (!req.file) {
+            throw new Error('No image file provided');
+        }
+        const imageUrl = req.file.path;
+
+//         const savedImage = await Image.create({
+//             imageUrl: imageUrl,
+
+//         });
+
+        res.json({ imageUrl: savedImage.imageUrl });
+    } catch (error) {
+        console.error('Error uploading image:', error.message);
+        res.status(500).json({ error: error.message });
+    }
+}); */
 module.exports = router;
